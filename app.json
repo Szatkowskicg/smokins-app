@@ -1,0 +1,70 @@
+{
+  "expo": {
+    "name": "Smokin's Loyalty Club",
+    "slug": "smokins-app",
+    "scheme": "smokins-app",
+    "version": "1.0.6",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "primaryColor": "#11131F",
+    "backgroundColor": "#11131F",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#11131F"
+    },
+    "ios": {
+      "userInterfaceStyle": "dark",
+      "supportsTablet": true,
+      "buildNumber": "7",
+      "bundleIdentifier": "com.propixia.smokins"
+    },
+    "android": {
+      "blockedPermissions": ["android.permission.RECORD_AUDIO"],
+      "userInterfaceStyle": "dark",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon/foreground.png",
+        "backgroundColor": "#11131F"
+      },
+      "package": "com.propixia.smokins",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "minSdkVersion": 26,
+            "buildToolsVersion": "34.0.0"
+          },
+          "ios": {
+            "deploymentTarget": "15.1"
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "551ef2df-f422-4e2a-b620-bd07c9c201a4"
+      }
+    }
+  }
+}
