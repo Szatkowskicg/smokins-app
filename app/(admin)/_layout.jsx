@@ -1,17 +1,20 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Dimensions, Easing } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { Tabs } from "expo-router";
-import React from "react";
 import { icons } from "../../constants";
+import { Tabs } from "expo-router";
+import { NavigationContainer } from "@react-navigation/native";
+
+const { height: screenHeight } = Dimensions.get("window");
+const tabBarHeight = screenHeight * 0.1;
 
 const TabIcon = ({ icon, color, name, focused }) => {
   return (
-    <View className="items-center justify-center gap-2">
+    <View className="flex-1 items-center justify-center w-52">
       <Image
         source={icon}
         resizeMode="contain"
         tintColor={color}
-        className="w-6 h-6"
+        className="w-6 h-6 mb-2"
       />
       <Text
         className={`${focused ? "font-psemibold" : "font-pregular"} text-xs`}
@@ -29,15 +32,17 @@ const AdminLayout = () => {
       <Tabs
         screenOptions={{
           contentStyle: { backgroundColor: "#11131F" },
-          animation: "none",
+          sceneStyle: { backgroundColor: "#11131F" },
+          animation: "shift",
           tabBarShowLabel: false,
           tabBarActiveTintColor: "#00C853",
           tabBarInactiveTintColor: "#7B767A",
           tabBarStyle: {
+            paddingTop: tabBarHeight * 0.2,
             backgroundColor: "#11131F",
             borderTopWidth: 1,
             borderTopColor: "#2F344A",
-            height: 84,
+            height: tabBarHeight,
           },
         }}
       >

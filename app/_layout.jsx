@@ -43,6 +43,7 @@ const RootLayout = () => {
         screenOptions={{
           animation: "none",
           contentStyle: { backgroundColor: "#11131F" },
+          sceneStyle: { backgroundColor: "#11131F" },
         }}
       >
         <Stack.Screen name="index" options={{ headerShown: false }} />

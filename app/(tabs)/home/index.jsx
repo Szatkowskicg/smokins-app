@@ -1,16 +1,10 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  RefreshControl,
-  Alert,
-  Image,
-} from "react-native";
+import { View, Text, ScrollView, RefreshControl, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getCurrentUSer,
   getAllCoupons,
+  getAllCouponsIOS,
   getAllRewards,
 } from "../../../lib/appwrite";
 import useAppwrite from "../../../lib/useAppwrite";
@@ -45,18 +39,19 @@ const Home = () => {
   };
 
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <SafeAreaView className="bg-primary flex-1" edges={["top"]}>
       <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <View className="justify-center space-y-8 my-4">
+        <View className="flex-1 justify-center space-y-8">
           {/* Welcome screen */}
-          <View className="flex-row justify-between px-8">
+          <View className="flex-row justify-between px-8 pt-4">
             <View className="items-start flex-col mb-6">
               <Text className="text-2xl text-white font-pbold pb-2">
-                Cześć, {userData ? userData.username : "..."}!
+                Cześć, {userData ? userData.username : "..."}
               </Text>
               <View className="justify-between items-center flex-row">
                 <Text className="text-base text-white font-plight">Korony</Text>

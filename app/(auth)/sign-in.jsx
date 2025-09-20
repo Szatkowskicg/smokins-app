@@ -1,6 +1,14 @@
-import { View, Text, ScrollView, Image, Alert } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { images } from "../../constants";
 
 import FormField from "../../components/FormField";
@@ -9,88 +17,104 @@ import { Link, router } from "expo-router";
 import { getCurrentUSer, signIn } from "../../lib/appwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
 
+//Email validator
+const email_validate = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
 const SignIn = () => {
-  const { setUser, setIsLogged, isAdmin } = useGlobalContext();
+  const { setUser, setIsLogged } = useGlobalContext();
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
-  const submit = async () => {
-    if (form.email === "" || form.password === "") {
-      Alert.alert("Error", "Prosze wypełnić wszystkie pola");
+  const handleChange = useCallback(
+    (field, value) => setForm((prev) => ({ ...prev, [field]: value })),
+    []
+  );
+
+  const submit = useCallback(async () => {
+    if (!email_validate(form.email)) {
+      return Alert.alert("Błąd", "Podaj poprawny adres e-mail.");
+    }
+    if (!form.email || !form.password) {
+      return Alert.alert("Błąd", "Proszę wypełnić wszystkie pola.");
     }
 
     setSubmitting(true);
-
     try {
       await signIn(form.email, form.password);
-      const results = await getCurrentUSer();
-      setUser(results);
+      const user = await getCurrentUSer();
+      setUser(user);
       setIsLogged(true);
 
-      Alert.alert("Sukces", "Zalogowano poprawnie");
+      Alert.alert("Sukces", "Zalogowano pomyślnie.");
       router.replace("/");
     } catch (error) {
-      Alert.alert("Błąd", error.message);
+      Alert.alert("Błąd logowania", error.message || "Coś poszło nie tak.");
     } finally {
       setSubmitting(false);
     }
-  };
+  }, [form, setUser, setIsLogged]);
 
   return (
-    <SafeAreaView className="bg-primary h-full">
-      <ScrollView>
-        <View className="w-full justify-center min-h-[85vh] px-4 my-6">
-          <View className="items-center">
-            <Image
-              source={images.logo}
-              resizeMode="contain"
-              className="w-[142px] h-[45px]"
-            />
-          </View>
+    <SafeAreaView className="bg-primary flex-1">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <View className="flex-1 justify-center px-4 my-6">
+            <View className="items-center mb-10">
+              <Image
+                source={images.logo}
+                resizeMode="contain"
+                className="w-[142px] h-[45px]"
+              />
+            </View>
 
-          <Text className="text-2xl text-white text-semibold mt-10 font-psemibold">
-            Wracaj do gry! Zaloguj się!
-          </Text>
-
-          <FormField
-            title="Email"
-            value={form.email}
-            handleChangeText={(e) => setForm({ ...form, email: e })}
-            otherStyles="mt-7"
-            keyboardType="email-address"
-          />
-
-          <FormField
-            title="Hasło"
-            value={form.password}
-            handleChangeText={(e) => setForm({ ...form, password: e })}
-            otherStyles="mt-7"
-            autoCapitalize="none"
-          />
-
-          <CustomButton
-            title="Zaloguj się"
-            handlePress={submit}
-            containerStyles="mt-7 bg-secondary"
-            isLoading={isSubmitting}
-          />
-
-          <View className="justify-center pt-5 flex-row gap-2">
-            <Text className="text-lg text-gray-100 font-pregular">
-              Nie masz jeszcze konta?
+            <Text className="text-2xl text-white text-semibold mb-6 font-psemibold text-center">
+              Wracaj do gry! Zaloguj się!
             </Text>
-            <Link
-              href="/sign-up"
-              className="text-lg font-psemibold text-secondary"
-            >
-              Zarejestruj się
-            </Link>
+
+            <FormField
+              title="Email"
+              value={form.email}
+              handleChangeText={(value) => handleChange("email", value)}
+              otherStyles="mt-4"
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+
+            <FormField
+              title="Hasło"
+              value={form.password}
+              handleChangeText={(value) => handleChange("password", value)}
+              otherStyles="mt-4"
+              autoCapitalize="none"
+            />
+
+            <CustomButton
+              title="Zaloguj się"
+              handlePress={submit}
+              containerStyles="mt-4 bg-secondary"
+              isLoading={isSubmitting}
+            />
+
+            <View className="flex-row justify-center items-center mt-6 gap-2">
+              <Text className="text-lg text-gray-100 font-pregular">
+                Nie masz jeszcze konta?
+              </Text>
+              <Link
+                href="/sign-up"
+                className="text-lg font-psemibold text-secondary"
+              >
+                Zarejestruj się
+              </Link>
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

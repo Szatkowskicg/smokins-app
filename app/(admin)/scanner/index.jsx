@@ -1,5 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import { View, Text, ScrollView, AppState } from "react-native";
+import { useState, useEffect, useRef } from "react";
+import {
+  View,
+  Text,
+  AppState,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 
@@ -8,6 +15,16 @@ import CustomButton from "../../../components/CustomButton";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useCodeQRContext } from "../../../context/CodeQRContext";
 import CameraOverlay from "../../../pages/CameraOverlay";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+} from "react-native-reanimated";
+import { icons } from "../../../constants";
+import logo from "../../../assets/images/logo-small.png";
+
+const { height } = Dimensions.get("window");
 
 const addPoints = () => {
   const { user } = useGlobalContext();
@@ -18,7 +35,12 @@ const addPoints = () => {
   const appState = useRef(AppState.currentState);
   const isPermissionGranted = Boolean(permission?.granted);
 
-  // Manage app state for QR code lock reset
+  // Animation shared values
+  const cameraY = useSharedValue(height);
+  const avatarScale = useSharedValue(1);
+  const avatarX = useSharedValue(0);
+
+  // Reset QR lock on app state resume
   useEffect(() => {
     const subscription = AppState.addEventListener("change", (nextAppState) => {
       if (
@@ -41,24 +63,22 @@ const addPoints = () => {
       qrLock.current = true;
       setTimeout(() => {
         setScannedData(data);
-        setCameraVisible(false); // Close the camera once a code is scanned
+        setCameraVisible(false);
         router.push("scanner/scannedUser");
       }, 500);
     }
   };
 
-  // Toggle camera visibility
+  // Toggle camera with animation
   const toggleCamera = () => {
     setCameraVisible((prevVisible) => !prevVisible);
   };
 
   if (!permission) {
-    // Loading
     return <View className="bg-primary" />;
   }
 
   if (!isPermissionGranted) {
-    // Camera permissions are not granted yet.
     return (
       <View className="bg-primary h-full justify-center items-center px-4">
         <Text className="text-white text-lg mb-4">
@@ -75,16 +95,23 @@ const addPoints = () => {
   }
 
   return (
-    <SafeAreaView className="bg-primary h-full">
-      <View className="flex-1 py-4 px-4 space-y-4">
-        {/* Login info */}
-        <View className="px-4">
-          <Text className="text-2xl text-white font-pbold pb-2">
-            Smokin's {user ? user.username : "..."}
+    <SafeAreaView className="flex-1 bg-primary">
+      <View className="flex-1 items-center justify-center">
+        {/* Avatar + Name */}
+        <View className="flex flex-row items-center mb-12">
+          <Animated.View className="pr-4">
+            <Image
+              source={logo}
+              className="bg-black w-16 h-16 rounded-full border-2 border-white"
+            />
+          </Animated.View>
+          <Text className="text-3xl text-white font-bold">
+            {user ? user.username : "..."}
           </Text>
         </View>
 
-        <View className="flex-1 justify-center place-items-center">
+        {/* Animated Camera Modal */}
+        <View className="flex-1 justify-center place-items-center w-full p-4">
           {/* Scanner button */}
           <CustomButton
             title={cameraVisible ? "Zamknij kamerę" : "Skanuj kod QR"}
@@ -94,7 +121,7 @@ const addPoints = () => {
           />
 
           {cameraVisible && permission && (
-            <View className="flex-1 my-8 overflow-hidden rounded-lg">
+            <View className="flex-1 my-8 overflow-hidden rounded-3xl">
               <CameraView
                 style={{ flex: 1 }}
                 mute={true}

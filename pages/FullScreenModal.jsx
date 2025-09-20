@@ -1,15 +1,10 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Modal,
-  SafeAreaView,
-} from "react-native";
-import React, { useState } from "react";
+import { View, Text, TouchableOpacity, Modal } from "react-native";
+import { useState } from "react";
 import * as Brightness from "expo-brightness";
 
 import QRCode from "react-native-qrcode-svg";
 import CustomButton from "../components/CustomButton";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const FullScreenModal = ({ data }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -20,6 +15,7 @@ const FullScreenModal = ({ data }) => {
     try {
       const currentBrightness = await Brightness.getBrightnessAsync();
       setOriginalBrightness(currentBrightness);
+
       await Brightness.setBrightnessAsync(1);
     } catch (error) {
       console.error("Error adjusting brightness:", error);
@@ -31,6 +27,8 @@ const FullScreenModal = ({ data }) => {
       if (originalBrightness !== null) {
         await Brightness.setBrightnessAsync(originalBrightness);
       }
+
+      await Brightness.restoreSystemBrightnessAsync();
     } catch (error) {
       console.error("Error restoring brightness:", error);
     } finally {
@@ -40,13 +38,12 @@ const FullScreenModal = ({ data }) => {
 
   return (
     <>
-      <TouchableOpacity
-        onPress={handleOpen}
-        activeOpacity={0.7}
-        className="mx-4 bg-secondary p-4 rounded-lg items-center justify-center mb-8"
-      >
-        <Text className="text-white text-base font-psemibold">Twój kod QR</Text>
-      </TouchableOpacity>
+      <CustomButton
+        title="Twój kod QR"
+        containerStyles={"mx-4 bg-secondary p-4 mb-8"}
+        textStyles={"text-white"}
+        handlePress={handleOpen}
+      />
 
       <Modal
         visible={modalVisible}
@@ -57,19 +54,19 @@ const FullScreenModal = ({ data }) => {
         style={{ margin: 0, justifyContent: "flex-end" }}
       >
         <SafeAreaView className="flex-1 bg-primary">
-          <View className="flex-1 justify-start items-center bg-primary w-full h-full p-4">
-            <View className="px-4 w-full">
+          <View className="flex-1 justify-start items-center bg-primary w-full h-full px-4">
+            <View className="p-4 w-full">
               <Text className="text-2xl font-pbold text-white pb-4">
                 Twój kod QR
               </Text>
-              <Text className="text-lg text-white font-pregular w-full pb-4">
+              <Text className="text-lg text-gray-400 font-pregular w-full pb-4">
                 Zeskanuj swój kod przy kasie aby nabić punkty lub odebrać
                 nagrody.
               </Text>
             </View>
             {/* QR Code */}
             {data ? (
-              <View className="justify-center items-center my-4 p-8 rounded-xl w-full bg-black-100">
+              <View className="justify-center items-center my-4 p-8 rounded-3xl w-full bg-black-100">
                 <QRCode
                   value={data.accountId}
                   size={250}

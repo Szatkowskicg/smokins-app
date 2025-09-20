@@ -57,16 +57,16 @@ const DeleteModal = () => {
     <>
       <TouchableOpacity
         activeOpacity={0.7}
-        className="flex-row items-center justify-start px-8 py-4 border-b border-black-200"
+        className="flex-row items-center justify-start px-10 py-4"
         onPress={handleOpen}
       >
         <Image
           source={Trash}
           resizeMode="contain"
-          tintColor={"#00C853"}
-          className="w-4 h-4 mr-4"
+          tintColor={"#FF5252"}
+          className="w-5 h-5 mr-4"
         />
-        <Text className="text-white text-lg">Usuń konto</Text>
+        <Text className="text-red-400 text-lg">Usuń konto</Text>
       </TouchableOpacity>
 
       <Modal

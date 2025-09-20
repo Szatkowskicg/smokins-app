@@ -36,8 +36,8 @@ const InfoModal = () => {
         onRequestClose={handleClose}
         onDismiss={handleClose}
       >
-        <View className="flex-1 justify-center items-center bg-black-800 bg-opacity-70">
-          <View className="bg-primary rounded-xl w-auto p-8 mx-6 border-2 border-black-200">
+        <View className="flex-1 justify-center items-center">
+          <View className="bg-primary rounded-3xl w-auto p-8 mx-8 border-2 border-black-200">
             <Text className="text-lg font-bold mb-4 text-white">
               Informacje o aplikacji
             </Text>

@@ -7,7 +7,8 @@ const homeLayout = () => {
       <Stack
         screenOptions={{
           contentStyle: { backgroundColor: "#11131F" },
-          animation: "none",
+          sceneStyle: { backgroundColor: "#11131F" },
+          animation: "fade",
           headerStyle: {
             backgroundColor: "#11131F",
           },

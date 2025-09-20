@@ -1,5 +1,4 @@
 import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
-import React from "react";
 import { addUserClaimedRewards, updateUserData } from "../lib/appwrite";
 import ConfirmAlert from "../components/ConfirmAlert";
 
@@ -15,7 +14,7 @@ const CouponCard = ({
 }) => {
   const isButtonDisabled = points < points_needed;
 
-  onPress = () => {
+  const onPress = () => {
     ConfirmAlert(
       "Odbierz nagrodę!",
       `Czy na pewno chcesz odebrać nagrodę za ${points_needed}pkt?`,
@@ -42,14 +41,14 @@ const CouponCard = ({
 
   return (
     <View
-      className={`w-80 bg-black-100 rounded-xl p-4 justify-start ${
+      className={`w-80 bg-black-100 rounded-3xl p-4 justify-start ${
         index ? "mr-4" : "ml-4 mr-4"
       } `}
     >
       <View className="flex-grow">
         <View className="flex-row justify-between space-x-2">
           <View className="w-3/4">
-            <View className="flex-row justify-start items-center space-x-2">
+            <View className="flex-row justify-start items-center">
               <Text className="text-white text-xl font-pbold">
                 {points_needed}
               </Text>
@@ -57,7 +56,7 @@ const CouponCard = ({
                 source={icon}
                 resizeMode="contain"
                 tintColor={tintColor}
-                className="w-5 h-5"
+                className="w-5 h-5 ml-2"
               />
             </View>
 
@@ -87,14 +86,14 @@ const CouponCard = ({
       </View>
 
       <TouchableOpacity
-        className={`rounded-lg mt-4 py-2 ${
+        className={`rounded-xl mt-4 py-2 ${
           isButtonDisabled ? "bg-black-100" : "bg-black-200"
         }`}
         onPress={!isButtonDisabled ? onPress : null}
         disabled={isButtonDisabled}
       >
         <Text
-          className={`text-center font-psemibold ${
+          className={`text-center font-psemibold text-base ${
             isButtonDisabled ? "text-black-200" : "text-white"
           }`}
         >

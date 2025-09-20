@@ -1,5 +1,4 @@
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
 import EmptyState from "./EmptyState";
 import CouponCard from "./CouponCard";
 import { router } from "expo-router";
@@ -55,9 +54,9 @@ const CouponsList = ({
         )}
         pagingEnabled={true}
         snapToInterval={294}
-        decelerationRate={0.5}
+        decelerationRate={0.75}
         snapToAlignment="start"
-        scrollEventThrottle={32}
+        scrollEventThrottle={16}
         ListEmptyComponent={() => (
           <View className="w-5/6">
             <EmptyState

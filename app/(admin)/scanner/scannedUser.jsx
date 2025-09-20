@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Image,
   Alert,
-  SafeAreaView,
 } from "react-native";
 import React, { useState } from "react";
 import { useCodeQRContext } from "../../../context/CodeQRContext";
@@ -25,6 +24,7 @@ import EmptyState from "../../../components/EmptyState";
 import { icons } from "../../../constants";
 import ConfirmAlert from "../../../components/ConfirmAlert";
 import { router, useFocusEffect } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const scannedUser = () => {
   const { scannedData, setScannedData } = useCodeQRContext();
@@ -174,7 +174,7 @@ const scannedUser = () => {
   );
 
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <View className="bg-primary h-full">
       <View className="flex-1">
         {/* Scrollable FlatList */}
         <FlatList
@@ -255,7 +255,7 @@ const scannedUser = () => {
           />
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

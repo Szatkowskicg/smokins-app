@@ -3,7 +3,7 @@
     "name": "Smokin's Loyalty Club",
     "slug": "smokins-app",
     "scheme": "smokins-app",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -21,6 +21,7 @@
       "bundleIdentifier": "com.propixia.smokins"
     },
     "android": {
+      "backgroundColor": "#11131F",
       "blockedPermissions": ["android.permission.RECORD_AUDIO"],
       "userInterfaceStyle": "dark",
       "adaptiveIcon": {
@@ -50,8 +51,8 @@
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 34,
-            "targetSdkVersion": 34,
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
             "minSdkVersion": 26,
             "buildToolsVersion": "34.0.0"
           },
@@ -59,7 +60,8 @@
             "deploymentTarget": "15.1"
           }
         }
-      ]
+      ],
+      "expo-asset"
     ],
     "extra": {
       "eas": {

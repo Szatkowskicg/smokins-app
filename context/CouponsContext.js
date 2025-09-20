@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext } from "react";
 
 const CouponsContext = createContext();
 export const useCouponsContext = () => useContext(CouponsContext);
@@ -15,15 +15,17 @@ const CouponsProvider = ({ children }) => {
   };
 
   return (
-    <CouponsContext.Provider value={{ 
-        points, 
-        setPoints, 
-        documentId, 
-        setDocumentId, 
-        accountId, 
-        setAccountId, 
-        updateUserData
-      }}>
+    <CouponsContext.Provider
+      value={{
+        points,
+        setPoints,
+        documentId,
+        setDocumentId,
+        accountId,
+        setAccountId,
+        updateUserData,
+      }}
+    >
       {children}
     </CouponsContext.Provider>
   );

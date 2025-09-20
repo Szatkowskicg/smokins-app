@@ -1,13 +1,6 @@
-import {
-  View,
-  Text,
-  FlatList,
-  SafeAreaView,
-  ActivityIndicator,
-} from "react-native";
-import React from "react";
+import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import useAppwrite from "../../../lib/useAppwrite";
-import { getAllCoupons } from "../../../lib/appwrite";
+import { getAllCoupons, getAllCouponsIOS } from "../../../lib/appwrite";
 import CouponCardFull from "../../../components/CouponCardFull";
 import { useCouponsContext } from "../../../context/CouponsContext";
 
@@ -18,14 +11,14 @@ const couponsFullList = () => {
 
   if (isLoadingCoupons) {
     return (
-      <SafeAreaView className="bg-primary h-full flex justify-center items-center">
+      <View className="bg-primary h-full flex justify-center items-center">
         <ActivityIndicator size="large" color="#00ff00" />
-      </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <SafeAreaView className="h-full bg-primary">
+    <View className="h-full bg-primary">
       <FlatList
         data={coupons}
         keyExtractor={(item) => item.$id}
@@ -45,7 +38,7 @@ const couponsFullList = () => {
         )}
         contentContainerStyle={{ paddingTop: 14, paddingHorizontal: 14 }}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
