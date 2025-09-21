@@ -24,7 +24,6 @@ import EmptyState from "../../../components/EmptyState";
 import { icons } from "../../../constants";
 import ConfirmAlert from "../../../components/ConfirmAlert";
 import { router, useFocusEffect } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const scannedUser = () => {
   const { scannedData, setScannedData } = useCodeQRContext();
@@ -61,13 +60,8 @@ const scannedUser = () => {
     const formattedValue = value.replace(",", ".");
     setOrderAmount(formattedValue);
 
-    if (formattedValue === "" || isNaN(parseFloat(formattedValue))) {
-      setPoints(0);
-    } else {
-      const amountInNumber = parseFloat(formattedValue);
-      const calculatedPoints = Math.round(amountInNumber * 2);
-      setPoints(calculatedPoints);
-    }
+    const amount = parseFloat(formattedValue);
+    setPoints(!isNaN(amount) ? Math.round(amount * 2) : 0);
   };
 
   // Handle submitt button and add to DB
@@ -133,7 +127,7 @@ const scannedUser = () => {
             "Błąd podczas usuwania nagrody lub aktualizacji danych:",
             error
           );
-          // Możesz dodać dodatkowe działania, np. wyświetlenie alertu o błędzie
+
           Alert.alert(
             "Błąd",
             "Wystąpił problem podczas usuwania nagrody lub aktualizacji danych."

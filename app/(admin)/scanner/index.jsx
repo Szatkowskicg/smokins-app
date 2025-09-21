@@ -98,7 +98,7 @@ const addPoints = () => {
     <SafeAreaView className="flex-1 bg-primary">
       <View className="flex-1 items-center justify-center">
         {/* Avatar + Name */}
-        <View className="flex flex-row items-center mb-12">
+        <View className="flex-row items-center mb-12">
           <Animated.View className="pr-4">
             <Image
               source={logo}

@@ -6,8 +6,9 @@ const scannerLayout = () => {
     <CodeQRProvider>
       <Stack
         screenOptions={{
-          animation: "none",
+          animation: "fade",
           contentStyle: { backgroundColor: "#11131F" },
+          sceneStyle: { backgroundColor: "#11131F" },
           headerStyle: {
             backgroundColor: "#11131F",
           },
