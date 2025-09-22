@@ -91,7 +91,7 @@ const scannedUser = () => {
     );
   };
 
-  //Reset zmiennych
+  //Reset vars
   const resetState = () => {
     setScannedData(null);
     setPoints(0);
