@@ -43,7 +43,7 @@ const FormField = ({
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
               <Image
                 source={!showPassword ? icons.eye : icons.eyeHide}
-                className="w-6 h-6 py-4"
+                className="w-6 h-6 py-4 border-2 border-white"
                 resizeMode="contain"
               />
             </TouchableOpacity>

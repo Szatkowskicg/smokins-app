@@ -8,6 +8,7 @@ import {
   Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useState, useCallback } from "react";
 import { images } from "../../constants";
 
@@ -59,62 +60,62 @@ const SignIn = () => {
 
   return (
     <SafeAreaView className="bg-primary flex-1">
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
+      <KeyboardAwareScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ flexGrow: 1 }}
+        enableOnAndroid={true}
+        extraScrollHeight={20}
       >
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-          <View className="flex-1 justify-center px-4 my-6">
-            <View className="items-center mb-10">
-              <Image
-                source={images.logo}
-                resizeMode="contain"
-                className="w-[142px] h-[45px]"
-              />
-            </View>
-
-            <Text className="text-2xl text-white text-semibold mb-6 font-psemibold text-center">
-              Wracaj do gry! Zaloguj się!
-            </Text>
-
-            <FormField
-              title="Email"
-              value={form.email}
-              handleChangeText={(value) => handleChange("email", value)}
-              otherStyles="mt-4"
-              keyboardType="email-address"
-              autoCapitalize="none"
+        <View className="flex-1 justify-center px-4 my-6">
+          <View className="items-center mb-10">
+            <Image
+              source={images.logo}
+              resizeMode="contain"
+              className="w-[142px] h-[45px]"
             />
-
-            <FormField
-              title="Hasło"
-              value={form.password}
-              handleChangeText={(value) => handleChange("password", value)}
-              otherStyles="mt-4"
-              autoCapitalize="none"
-            />
-
-            <CustomButton
-              title="Zaloguj się"
-              handlePress={submit}
-              containerStyles="mt-4 bg-secondary"
-              isLoading={isSubmitting}
-            />
-
-            <View className="flex-row justify-center items-center mt-6 gap-2">
-              <Text className="text-lg text-gray-100 font-pregular">
-                Nie masz jeszcze konta?
-              </Text>
-              <Link
-                href="/sign-up"
-                className="text-lg font-psemibold text-secondary"
-              >
-                Zarejestruj się
-              </Link>
-            </View>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+
+          <Text className="text-2xl text-white text-semibold mb-6 font-psemibold text-center">
+            Wracaj do gry! Zaloguj się!
+          </Text>
+
+          <FormField
+            title="Email"
+            value={form.email}
+            handleChangeText={(value) => handleChange("email", value)}
+            otherStyles="mt-4"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+
+          <FormField
+            title="Hasło"
+            value={form.password}
+            handleChangeText={(value) => handleChange("password", value)}
+            otherStyles="mt-4"
+            autoCapitalize="none"
+          />
+
+          <CustomButton
+            title="Zaloguj się"
+            handlePress={submit}
+            containerStyles="mt-4 bg-secondary text-white"
+            isLoading={isSubmitting}
+          />
+
+          <View className="flex-row justify-center items-center mt-6 gap-2">
+            <Text className="text-lg text-gray-100 font-pregular">
+              Nie masz jeszcze konta?
+            </Text>
+            <Link
+              href="/sign-up"
+              className="text-lg font-psemibold text-secondary"
+            >
+              Zarejestruj się
+            </Link>
+          </View>
+        </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };

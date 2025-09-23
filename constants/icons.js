@@ -3,7 +3,7 @@ import home from "../assets/icons/home.png";
 import profile from "../assets/icons/profile.png";
 import search from "../assets/icons/search.png";
 import rightArrow from "../assets/icons/faAngleRight.png";
-import eyeHide from "../assets/icons/eye-hide.png";
+import eyeHide from "../assets/icons/eyeHide.png";
 import eye from "../assets/icons/eye.png";
 import crown from "../assets/icons/faCrown.png";
 import points from "../assets/icons/faCoins.png";
@@ -26,12 +26,12 @@ export default {
   eyeHide,
   eye,
   crown,
-  points, 
+  points,
   scanner,
-  key, 
-  list, 
-  trash, 
-  info, 
-  plus, 
-  minus
+  key,
+  list,
+  trash,
+  info,
+  plus,
+  minus,
 };
