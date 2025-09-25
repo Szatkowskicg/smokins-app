@@ -1,30 +1,21 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  View,
-  Text,
-  AppState,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import { View, Text, AppState } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 
-import { useGlobalContext } from "../../../context/GlobalProvider";
-import CustomButton from "../../../components/CustomButton";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useCodeQRContext } from "../../../context/CodeQRContext";
+import { useGlobalContext } from "../../../context/GlobalProvider";
+
+import CustomButton from "../../../components/CustomButton";
 import CameraOverlay from "../../../pages/CameraOverlay";
 import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-  withTiming,
+  FadeIn,
+  FadeOut,
+  SlideInDown,
+  SlideOutDown,
 } from "react-native-reanimated";
-import { icons } from "../../../constants";
-import logo from "../../../assets/images/logo-small.png";
-
-const { height } = Dimensions.get("window");
+import { images } from "../../../constants";
 
 const addPoints = () => {
   const { user } = useGlobalContext();
@@ -34,11 +25,6 @@ const addPoints = () => {
   const qrLock = useRef(false);
   const appState = useRef(AppState.currentState);
   const isPermissionGranted = Boolean(permission?.granted);
-
-  // Animation shared values
-  const cameraY = useSharedValue(height);
-  const avatarScale = useSharedValue(1);
-  const avatarX = useSharedValue(0);
 
   // Reset QR lock on app state resume
   useEffect(() => {
@@ -95,33 +81,35 @@ const addPoints = () => {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-primary">
-      <View className="flex-1 items-center justify-center">
-        {/* Avatar + Name */}
-        <View className="flex-row items-center mb-12">
-          <Animated.View className="pr-4">
-            <Image
-              source={logo}
-              className="bg-black w-16 h-16 rounded-full border-2 border-white"
-            />
-          </Animated.View>
-          <Text className="text-3xl text-white font-bold">
-            {user ? user.username : "..."}
-          </Text>
+    <SafeAreaView className="flex-1 bg-primary" edges={["top"]}>
+      <View className="flex-1 py-4">
+        {/* Top: Avatar + Username */}
+        <View className="items-center py-6 px-4">
+          <View className="flex-col items-center">
+            <Text className="text-3xl text-white font-bold">
+              Smokin's {user ? user.username : "..."}
+            </Text>
+          </View>
         </View>
 
-        {/* Animated Camera Modal */}
-        <View className="flex-1 justify-center place-items-center w-full p-4">
-          {/* Scanner button */}
-          <CustomButton
-            title={cameraVisible ? "Zamknij kamerę" : "Skanuj kod QR"}
-            handlePress={toggleCamera}
-            containerStyles="bg-black-200"
-            textStyles="text-white"
-          />
+        {/* Middle: Animated image / camera */}
+        <View className="flex-1 justify-center items-center overflow-hidden pb-4 px-4">
+          {!cameraVisible && (
+            <Animated.Image
+              source={images.scanner}
+              entering={FadeIn.duration(400)}
+              exiting={FadeOut.duration(300)}
+              className="w-5/6 h-full"
+              resizeMode="contain"
+            />
+          )}
 
-          {cameraVisible && permission && (
-            <View className="flex-1 my-8 overflow-hidden rounded-3xl">
+          {cameraVisible && (
+            <Animated.View
+              entering={FadeIn.duration(300)}
+              exiting={FadeOut.duration(400)}
+              className="w-full h-full overflow-hidden rounded-3xl"
+            >
               <CameraView
                 style={{ flex: 1 }}
                 mute={true}
@@ -129,8 +117,18 @@ const addPoints = () => {
                 onBarcodeScanned={handleBarCodeScanned}
               />
               <CameraOverlay />
-            </View>
+            </Animated.View>
           )}
+        </View>
+
+        {/* Bottom: Button */}
+        <View className="px-4">
+          <CustomButton
+            title={cameraVisible ? "Zamknij kamerę" : "Skanuj kod QR"}
+            handlePress={toggleCamera}
+            containerStyles="bg-black-200 bg-secondary-100"
+            textStyles="text-white"
+          />
         </View>
       </View>
     </SafeAreaView>

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Modal } from "react-native";
+import { View, Text, Modal } from "react-native";
 import { useState } from "react";
 import * as Brightness from "expo-brightness";
 

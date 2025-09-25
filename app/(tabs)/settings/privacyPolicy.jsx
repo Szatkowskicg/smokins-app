@@ -1,17 +1,18 @@
-import { ScrollView, View, Text, SafeAreaView } from 'react-native';
-import React from 'react'
-import { privacyPolicyText } from '../../../constants/textFiles'
+import { ScrollView, View, Text } from "react-native";
+import { privacyPolicyText } from "../../../constants/textFiles";
 
 const privacyPolicy = () => {
-    return (
-        <SafeAreaView className='bg-primary h-full'>
-          <ScrollView>
-            <View className='justify-center px-8 py-4'>
-              <Text className='text-white text-base font-pregular'>{privacyPolicyText}</Text>
-            </View>
-          </ScrollView>
-        </SafeAreaView>
-    );
-}
+  return (
+    <View className="bg-primary flex-1">
+      <ScrollView>
+        <View className="justify-center px-8 py-4">
+          <Text className="text-white text-base font-pregular">
+            {privacyPolicyText}
+          </Text>
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
 
-export default privacyPolicy
+export default privacyPolicy;

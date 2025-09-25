@@ -6,7 +6,7 @@ import {
   Modal,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import CustomButton from "../components/CustomButton";
 import Trash from "../assets/icons/faTrash.png";
 import { deleteUserAndData } from "../lib/appwrite";

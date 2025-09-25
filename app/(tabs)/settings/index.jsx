@@ -25,7 +25,7 @@ const Settings = () => {
   const Section = ({ title, items }) => (
     <View className="mb-6 px-4">
       <Text className="text-gray-400 px-4 mb-2 text-base">{title}</Text>
-      <View className="bg-[#1A1C2A] rounded-2xl overflow-hidden">
+      <View className="bg-black-100 rounded-2xl overflow-hidden">
         {items.map((item, index) => (
           <TouchableOpacity
             key={item.label}
@@ -49,8 +49,8 @@ const Settings = () => {
   );
 
   return (
-    <SafeAreaView className="bg-primary h-full" edges={["top"]}>
-      <ScrollView className="py-4">
+    <SafeAreaView className="bg-primary flex-1" edges={["top"]}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="py-4">
         {/* Section: Konto */}
         <Section
           title="Konto"

@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image, Modal } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import { icons } from "../constants";
 import CustomButton from "../components/CustomButton";
 

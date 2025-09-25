@@ -31,7 +31,7 @@ export default function App() {
 
   //Welcome screene
   return (
-    <SafeAreaView className="bg-primary flex-1 ">
+    <SafeAreaView className="bg-primary flex-1">
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="flex-1 justify-center items-center px-4">
           <Image

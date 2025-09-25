@@ -15,7 +15,7 @@ import { images } from "../../constants";
 import FormField from "../../components/FormField";
 import CustomButton from "../../components/CustomButton";
 import { Link, router } from "expo-router";
-import { getCurrentUSer, signIn } from "../../lib/appwrite";
+import { getCurrentUser, signIn } from "../../lib/appwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
 
 //Email validator
@@ -45,7 +45,7 @@ const SignIn = () => {
     setSubmitting(true);
     try {
       await signIn(form.email, form.password);
-      const user = await getCurrentUSer();
+      const user = await getCurrentUser();
       setUser(user);
       setIsLogged(true);
 

@@ -6,16 +6,16 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 import React, { useState } from "react";
 import { useCodeQRContext } from "../../../context/CodeQRContext";
 import { handleAddPoints } from "../../../lib/handlePoints";
 import {
-  deleteDocument,
-  getCurrentUSer,
+  getCurrentUser,
   getUserClaimedRewards,
   getUserDataById,
-  updateUserData,
 } from "../../../lib/appwrite";
 import useAppwrite from "../../../lib/useAppwrite";
 import CustomButton from "../../../components/CustomButton";
@@ -25,6 +25,29 @@ import { icons } from "../../../constants";
 import ConfirmAlert from "../../../components/ConfirmAlert";
 import { router, useFocusEffect } from "expo-router";
 
+import { deleteRewardWithCounters } from "../../../lib/handleRewards";
+import { useOrderAmount } from "../../../hooks/useOrderAmount";
+
+// Settings text section component
+const TextSection = ({ title, items }) => (
+  <View className="mb-6">
+    <Text className="text-gray-400 px-4 mb-2 text-base">{title}</Text>
+    <View className="bg-black-100 rounded-2xl overflow-hidden">
+      {items.map((item, index) => (
+        <View
+          key={item.label}
+          className={`flex-row items-center px-6 py-6 bg-black-100 ${
+            index !== items.length - 1 ? "border-b border-[#2F344A]" : ""
+          }`}
+        >
+          <Text className="text-gray-400 text-lg pr-4">{item.label}</Text>
+          <Text className="text-white text-lg">{item.data}</Text>
+        </View>
+      ))}
+    </View>
+  </View>
+);
+
 const scannedUser = () => {
   const { scannedData, setScannedData } = useCodeQRContext();
 
@@ -32,7 +55,7 @@ const scannedUser = () => {
     data: user,
     refetch: refetchUsers,
     isLoading: isLoadingUser,
-  } = useAppwrite(() => getCurrentUSer());
+  } = useAppwrite(() => getCurrentUser());
   const {
     data: userData,
     refetch: refetchUsersData,
@@ -43,25 +66,13 @@ const scannedUser = () => {
     refetch: refetchRewards,
     isLoading: isLoadingRewards,
   } = useAppwrite(() => getUserClaimedRewards(scannedData));
-
-  const [orderAmount, setOrderAmount] = useState("");
+  const { orderAmount, points, handleOrderAmountChange } = useOrderAmount();
   const [refreshing, setRefreshing] = useState(false);
-  const [points, setPoints] = useState(0);
-  const trashIcon = icons.trash;
 
   const onRefresh = async () => {
     setRefreshing(true);
     await refetchRewards();
     setRefreshing(false);
-  };
-
-  // Change order price to points
-  const handleOrderAmountChange = (value) => {
-    const formattedValue = value.replace(",", ".");
-    setOrderAmount(formattedValue);
-
-    const amount = parseFloat(formattedValue);
-    setPoints(!isNaN(amount) ? Math.round(amount * 2) : 0);
   };
 
   // Handle submitt button and add to DB
@@ -94,62 +105,52 @@ const scannedUser = () => {
   //Reset vars
   const resetState = () => {
     setScannedData(null);
-    setPoints(0);
     router.replace("/");
   };
 
-  // Removing reward from DB
-  const deleteReward = (rewardsId, colectionId) => {
-    let counterAdmin = user.rewardsCounter;
-    let updatedCounterAdmin = ++counterAdmin;
-    let counter = userData.rewardsCounter;
-    let updatedCounter = ++counter;
-
-    ConfirmAlert(
-      "Usunięcie danych!",
-      "Czy nagroda została wydana?",
-      async () => {
-        try {
-          await updateUserData(user.$id, {
-            rewardsCounter: updatedCounterAdmin,
-          });
-          await updateUserData(userData.$id, {
-            rewardsCounter: updatedCounter,
-          });
-          await deleteDocument(rewardsId, colectionId);
-          await Promise.all([
-            refetchUsers(),
-            refetchUsersData(),
-            refetchRewards(),
-          ]);
-        } catch (error) {
-          console.error(
-            "Błąd podczas usuwania nagrody lub aktualizacji danych:",
-            error
-          );
-
-          Alert.alert(
-            "Błąd",
-            "Wystąpił problem podczas usuwania nagrody lub aktualizacji danych."
-          );
-        }
-      }
-    );
+  const handleDeleteReward = (rewardId, collectionId) => {
+    deleteRewardWithCounters({
+      rewardId,
+      collectionId,
+      admin: user,
+      user: userData,
+      refetchUsers,
+      refetchUsersData,
+      refetchRewards,
+    });
   };
 
-  const PointItem = ({ title, description, rewardId, rewardCollectionId }) => (
-    <View className="px-4 flex-row justify-center items-center mb-4 mr-4">
-      <View className="bg-black-100 p-4 flex-1 mr-4 rounded-xl space-y-2">
-        <Text className="text-base font-psemibold text-white">{title}</Text>
-        <Text className="text-sm font-pregular text-white">{description}</Text>
+  const PointItem = ({
+    title,
+    description,
+    rewardId,
+    rewardCollectionId,
+    index,
+    isLast,
+  }) => (
+    <View
+      className={`flex-row items-center px-6 py-6 bg-black-100 ${
+        index === 0 ? "rounded-t-2xl" : ""
+      }
+      ${isLast ? "rounded-b-2xl" : ""}
+      ${!isLast ? "border-b border-[#2F344A]" : ""}`}
+    >
+      <View className="flex-1">
+        <Text className="text-white text-lg font-psemibold">{title}</Text>
+        {description ? (
+          <Text className="text-gray-400 text-sm font-pregular">
+            {description}
+          </Text>
+        ) : null}
       </View>
 
       <TouchableOpacity
-        className="p-4"
-        onPress={() => deleteReward(rewardId, rewardCollectionId)}
+        onPress={() => handleDeleteReward(rewardId, rewardCollectionId)}
+        className="ml-4"
+        activeOpacity={0.7}
       >
         <Image
-          source={trashIcon}
+          source={icons.trash}
           resizeMode="contain"
           tintColor="#7B767A"
           className="w-5 h-5"
@@ -160,7 +161,6 @@ const scannedUser = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      // Reset state when the screen loses focus
       return () => {
         resetState();
       };
@@ -168,56 +168,52 @@ const scannedUser = () => {
   );
 
   return (
-    <View className="bg-primary h-full">
-      <View className="flex-1">
+    <View className="bg-primary flex-1">
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={120}
+      >
         {/* Scrollable FlatList */}
         <FlatList
           data={rewards}
           keyExtractor={(item) => item.$id}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <PointItem
+              index={index}
               title={item.title}
               description={item.description}
               rewardCollectionId={item.$collectionId}
               rewardId={item.$id}
+              isLast={index === rewards.length - 1}
             />
           )}
           ListHeaderComponent={
-            <View className="space-y-4 my-4">
-              <View className="px-4 space-y-4 pb-4 border-b border-black-200">
-                <Text className="text-lg font-psemibold text-white">
-                  Dane klienta:
-                </Text>
-                <View className="flex-row justify-between">
-                  <Text className="text-base font-pregular text-white">
-                    Login:
-                  </Text>
-                  <Text className="text-base font-pregular text-white">
-                    {userData ? userData.username : "..."}
-                  </Text>
-                </View>
-                <View className="flex-row justify-between">
-                  <Text className="text-base font-pregular text-white">
-                    Punkty:
-                  </Text>
-                  <Text className="text-base font-pregular text-white">
-                    {userData ? userData.points : "..."}
-                  </Text>
-                </View>
-                <View className="flex-row justify-between">
-                  <Text className="text-base font-pregular text-white">
-                    Korony:
-                  </Text>
-                  <Text className="text-base font-pregular text-white">
-                    {userData ? userData.crowns : "..."}
-                  </Text>
-                </View>
-              </View>
-              <Text className="text-lg px-4 pt-4 text-white font-psemibold">
-                Odebrane nagrody:{" "}
+            <View>
+              <TextSection
+                title="Dane klienta"
+                items={[
+                  {
+                    label: "Login",
+                    data: `${userData ? userData.username : "..."}`,
+                  },
+                  {
+                    label: "Punkty",
+                    data: `${userData ? userData.points : "..."}`,
+                  },
+                  {
+                    label: "Korony",
+                    data: `${userData ? userData.crowns : "..."}`,
+                  },
+                ]}
+              />
+
+              <Text className="text-gray-400 px-4 mb-2 text-base">
+                Odebrane nagrody
               </Text>
             </View>
           }
+          contentContainerStyle={{ paddingBottom: 16, paddingHorizontal: 16 }}
           ListEmptyComponent={() => (
             <EmptyState
               title="Brak nagród."
@@ -229,7 +225,6 @@ const scannedUser = () => {
           }
         />
 
-        {/* Fixed form and button section at the bottom */}
         <View className="px-4 py-4 bg-primary">
           <View className="mb-4">
             <FormField
@@ -248,7 +243,7 @@ const scannedUser = () => {
             textStyles="text-white"
           />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </View>
   );
 };

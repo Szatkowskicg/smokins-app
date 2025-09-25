@@ -2,7 +2,7 @@ import { View, Text, ScrollView, RefreshControl, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
 import {
-  getCurrentUSer,
+  getCurrentUser,
   getAllCoupons,
   getAllCouponsIOS,
   getAllRewards,
@@ -18,7 +18,7 @@ import { useCouponsContext } from "../../../context/CouponsContext";
 
 const Home = () => {
   const { data: userData, refetch: refetchUserData } =
-    useAppwrite(getCurrentUSer);
+    useAppwrite(getCurrentUser);
   const { data: coupons, refetch: refetchCoupons } = useAppwrite(getAllCoupons);
   const { data: rewards, refetch: refetchRewards } = useAppwrite(getAllRewards);
 

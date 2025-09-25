@@ -1,22 +1,20 @@
-import { View } from "react-native";
-import React from "react";
+import { Dimensions, View } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const CameraOverlay = () => {
+  const boxSize = width * 0.5;
+
   return (
     <View className="w-full h-full absolute inset-0 flex justify-center items-center">
-      {/* Celownik z szarymi rogami */}
-      <View className="h-60 w-60">
-        {/* Lewy górny róg */}
-        <View className="absolute top-0 left-0 w-10 h-10 border-l-4 border-t-4 border-white rounded-tl-xl" />
+      <View style={{ width: boxSize, height: boxSize }}>
+        <View className="absolute top-0 left-0 w-12 h-12 border-l-4 border-t-4 border-white rounded-tl-3xl" />
 
-        {/* Prawy górny róg */}
-        <View className="absolute top-0 right-0 w-10 h-10 border-r-4 border-t-4 border-white rounded-tr-xl" />
+        <View className="absolute top-0 right-0 w-12 h-12 border-r-4 border-t-4 border-white rounded-tr-3xl" />
 
-        {/* Lewy dolny róg */}
-        <View className="absolute bottom-0 left-0 w-10 h-10 border-l-4 border-b-4 border-white rounded-bl-xl" />
+        <View className="absolute bottom-0 left-0 w-12 h-12 border-l-4 border-b-4 border-white rounded-bl-3xl" />
 
-        {/* Prawy dolny róg */}
-        <View className="absolute bottom-0 right-0 w-10 h-10 border-r-4 border-b-4 border-white rounded-br-xl" />
+        <View className="absolute bottom-0 right-0 w-12 h-12 border-r-4 border-b-4 border-white rounded-br-3xl" />
       </View>
     </View>
   );
