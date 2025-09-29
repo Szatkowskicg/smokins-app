@@ -29,7 +29,7 @@ const ClaimedRewards = () => {
 
   const PointItem = ({ title, description }) => {
     return (
-      <View className="mx-4 bg-black-100 p-4 space-y-2 mb-4 rounded-xl">
+      <View className="mx-4 bg-black-100 p-6 mb-4 rounded-xl">
         <Text className="text-base font-psemibold text-white">{title}</Text>
         <Text className="text-sm font-pregular text-white">{description}</Text>
       </View>

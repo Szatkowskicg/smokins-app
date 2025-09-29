@@ -8,7 +8,7 @@ const homeLayout = () => {
         screenOptions={{
           contentStyle: { backgroundColor: "#11131F" },
           sceneStyle: { backgroundColor: "#11131F" },
-          animation: "fade",
+          animation: "none",
           headerStyle: {
             backgroundColor: "#11131F",
           },

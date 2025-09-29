@@ -1,10 +1,10 @@
 import { View, Text, Modal } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import * as Brightness from "expo-brightness";
 
 import QRCode from "react-native-qrcode-svg";
 import CustomButton from "../components/CustomButton";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const FullScreenModal = ({ data }) => {
   const [modalVisible, setModalVisible] = useState(false);

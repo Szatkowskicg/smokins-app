@@ -19,8 +19,8 @@ const RewardCard = ({
       async () => {
         try {
           await updateUserData(documentId, { crowns: 0 });
-          await refetch();
           await addUserClaimedRewards(accountId, title, description);
+          await refetch();
           Alert.alert(
             "Sukces!",
             "Zeskanuj kod QR w sklepie, by odebrać nagrodę."

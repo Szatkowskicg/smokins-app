@@ -77,20 +77,20 @@ const scannedUser = () => {
 
   // Handle submitt button and add to DB
   const handleSubmit = () => {
+    if (!scannedData || !orderAmount || Number(points) <= 0) {
+      Alert.alert(
+        "Coś nie tak!",
+        !scannedData
+          ? "Proszę zeskanuj poprawny kod QR."
+          : "Proszę wprowadź wartość zamówienia."
+      );
+      return;
+    }
+
     ConfirmAlert(
       "Potwierdzenie.",
       `Czy na pewno chcesz dodać ${points}Pkt?`,
       async () => {
-        if (!scannedData || !orderAmount) {
-          Alert.alert(
-            "Coś nie tak!",
-            !scannedData
-              ? "Proszę zeskanuj poprawny kod QR."
-              : "Proszę wprowadź wartość zamówienia."
-          );
-          return;
-        }
-
         const adminId = user.username;
         await handleAddPoints({
           scannedUserId: scannedData,
@@ -120,7 +120,7 @@ const scannedUser = () => {
     });
   };
 
-  const PointItem = ({
+  const RewardItem = ({
     title,
     description,
     rewardId,
@@ -179,7 +179,7 @@ const scannedUser = () => {
           data={rewards}
           keyExtractor={(item) => item.$id}
           renderItem={({ item, index }) => (
-            <PointItem
+            <RewardItem
               index={index}
               title={item.title}
               description={item.description}

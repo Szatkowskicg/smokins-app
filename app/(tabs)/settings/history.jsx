@@ -27,7 +27,7 @@ const history = () => {
 
   const PointItem = ({ points, date }) => {
     return (
-      <View className="mx-4 bg-black-100 p-4 mb-4 rounded-xl flex-row justify-between items-center">
+      <View className="mx-4 bg-black-100 p-6 mb-4 rounded-2xl flex-row justify-between items-center">
         <View>
           <Text className="text-base font-psemibold text-white">
             Zdobyłeś {points} punktów
@@ -42,9 +42,7 @@ const history = () => {
           </Text>
         </View>
 
-        <View className="bg-secondary pt-1 w-14 h-14 rounded-full flex items-center justify-center">
-          <Text className="text-white font-psemibold text-lg">{points}</Text>
-        </View>
+        <Text className="text-secondary font-psemibold text-lg">+{points}</Text>
       </View>
     );
   };

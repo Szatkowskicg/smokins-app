@@ -30,7 +30,7 @@ const Settings = () => {
           <TouchableOpacity
             key={item.label}
             activeOpacity={0.7}
-            className={`flex-row items-center px-6 py-6 bg-black-100 ${
+            className={`flex-row items-center p-6 bg-black-100 ${
               index !== items.length - 1 ? "border-b border-[#2F344A]" : ""
             }`}
             onPress={item.onPress}
