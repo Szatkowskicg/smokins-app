@@ -14,7 +14,7 @@ const FormField = ({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <View className={`space-y-2 ${otherStyles}`}>
+    <View className={`${otherStyles}`}>
       <Text className="pl-4 text-base text-gray-100 font-pmedium">{title}</Text>
 
       <View className="border-2 border-black-200 w-full px-4 bg-black-100 rounded-lg focus:border-gray-100 items-center flex-row">
@@ -41,10 +41,13 @@ const FormField = ({
           title === "Nowe hasło" ||
           title === "Potwierdź hasło") && (
           <View className="ml-4">
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <TouchableOpacity
+              className="h-12 px-2 justify-center items-center"
+              onPress={() => setShowPassword(!showPassword)}
+            >
               <Image
                 source={!showPassword ? icons.eye : icons.eyeHide}
-                className="w-6 h-6 py-4 border-2 border-white"
+                className="w-6 h-6 opacity-35"
                 resizeMode="contain"
               />
             </TouchableOpacity>

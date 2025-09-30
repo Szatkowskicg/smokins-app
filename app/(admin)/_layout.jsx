@@ -53,7 +53,7 @@ const AdminLayout = () => {
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
-                icon={icons.plus}
+                icon={icons.scanner}
                 color={color}
                 name="Skaner"
                 focused={focused}
@@ -68,7 +68,7 @@ const AdminLayout = () => {
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
-                icon={icons.minus}
+                icon={icons.profile}
                 color={color}
                 name="Profil"
                 focused={focused}

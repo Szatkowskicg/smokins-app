@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { icons } from "../../constants";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import ConfirmAlert from "../../components/ConfirmAlert";
-import { signOut } from "../../lib/appwrite";
+import { signOut } from "../../lib/appwrite.js";
 import { router } from "expo-router";
 
 const settingsAdmin = () => {
